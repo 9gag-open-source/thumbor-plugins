@@ -64,3 +64,4 @@ class Optimizer(BaseOptimizer):
             #
             logger.debug("[MOZJPEG] running: " + command)
             subprocess.call(command, shell=True, stdin=null)
+            os.unlink(intermediary)
