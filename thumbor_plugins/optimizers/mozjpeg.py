@@ -14,7 +14,6 @@ import re
 
 from thumbor.optimizers import BaseOptimizer
 from thumbor.utils import logger
-from PIL import Image
 
 
 class Optimizer(BaseOptimizer):
@@ -51,17 +50,14 @@ class Optimizer(BaseOptimizer):
                     self.mozjpeg_level = option[1]
 
 
-        intermediary = output_file + '-intermediate'
-        Image.open(input_file).save(intermediary, 'tga')
         command = '%s -quality %s %s -optimize %s > %s' % (
             self.mozjpeg_path,
             self.mozjpeg_level,
             ' '.join(args),
-            intermediary,
+            input_file,
             output_file,
         )
         with open(os.devnull) as null:
             #
             logger.debug("[MOZJPEG] running: " + command)
             subprocess.call(command, shell=True, stdin=null)
-            os.unlink(intermediary)
